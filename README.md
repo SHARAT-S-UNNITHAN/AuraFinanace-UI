@@ -247,6 +247,3 @@ To preview without running, open `AuraFinanceUI.kt` and use the Split view to se
 
 **Sharat S Unnithan**
 
-## License
-
-Add your preferred license here (for example MIT).
