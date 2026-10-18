@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AuraFinance · UI Showcase</title>
+<style>
+:root{--bg:#0D0E12;--sf:#16181F;--sf2:#1E212B;--tx:#fff;--mu:#9AA0AE;--em:#00E676;--ls:#FF5252;--bd:rgba(255,255,255,.08);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.4;
+background-image:radial-gradient(60% 40% at 50% 0,rgba(0,230,118,.12),transparent)}
+header{text-align:center;padding:48px 16px 8px}
+h1{font-size:clamp(28px,6vw,44px);letter-spacing:-.02em}h1 b{color:var(--em)}
+header p{color:var(--mu);max-width:560px;margin:10px auto 0}
+.gal{display:flex;flex-wrap:wrap;gap:36px 28px;justify-content:center;padding:36px 16px}
+figure{display:flex;flex-direction:column;align-items:center;gap:12px}
+figcaption{color:var(--mu);font-size:13px}figcaption b{color:var(--tx);display:block;text-align:center}
+.ph{width:300px;height:620px;border-radius:38px;padding:8px;background:linear-gradient(160deg,#2a2e3a,#0a0b0e);box-shadow:0 30px 60px rgba(0,0,0,.6),0 0 0 1px var(--bd)}
+.sc{height:100%;border-radius:30px;background:var(--bg);overflow:hidden;display:flex;flex-direction:column;position:relative}
+.sb{display:flex;justify-content:space-between;padding:10px 20px 4px;font-size:11px;color:var(--mu)}
+.tb{padding:6px 16px 10px;font-weight:700;font-size:17px}
+.bd{flex:1;padding:0 16px;display:flex;flex-direction:column;gap:12px;overflow:hidden}
+.cd{background:var(--sf);border-radius:16px;padding:14px;border:1px solid transparent;
+background-image:linear-gradient(var(--sf),var(--sf)),linear-gradient(135deg,rgba(0,230,118,.55),rgba(255,255,255,.08));background-origin:border-box;background-clip:padding-box,border-box}
+.mu{color:var(--mu);font-size:12px}.big{font-size:26px;font-weight:800;letter-spacing:-.01em}
+.up{color:var(--em)}.dn{color:var(--ls)}.dl{font-size:12px;font-weight:600}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.chip{font-size:10px;padding:2px 8px;border-radius:8px;background:var(--sf2);color:var(--mu)}
+.chip.ok{color:var(--em);background:rgba(0,230,118,.12)}.chip.wt{color:#FFD740;background:rgba(255,215,64,.12)}
+.nv{display:flex;justify-content:space-around;padding:10px 4px 14px;background:var(--sf);font-size:10px;color:var(--mu)}
+.nv span{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 10px;border-radius:12px}
+.nv .on{color:var(--em);background:rgba(0,230,118,.14)}
+.nv i{width:14px;height:14px;border-radius:4px;background:currentColor;opacity:.8}
+svg{display:block;width:100%}
+.bar{height:6px;border-radius:3px;background:var(--sf2);overflow:hidden}.bar>div{height:100%;border-radius:3px;background:var(--em)}
+.fp{margin:auto;width:92px;height:92px;border-radius:50%;border:2px solid var(--em);display:grid;place-items:center;box-shadow:0 0 40px rgba(0,230,118,.35)}
+.btn{background:var(--em);color:#0D0E12;font-weight:700;text-align:center;padding:12px;border-radius:14px;font-size:14px}
+section{max-width:980px;margin:0 auto;padding:8px 16px 56px}
+h2{font-size:20px;margin:24px 0 14px}
+.mods{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.mods .cd div{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+footer{text-align:center;color:var(--mu);font-size:12px;padding:0 16px 40px}
+</style></head><body>
+<header><h1>Aura<b>Finance</b></h1>
+<p>Premium dark-first Material 3 finance app · 7 modules · 50 screens. All 50 screens shown below as phone mockups, grouped by module.</p></header>
+<div class="gal" id="gal"></div>
+<section><h2>All 50 screens by module</h2><div class="mods" id="mods"></div></section>
+<footer>Design preview · sample data only · Jetpack Compose UI code available separately</footer>
+<script>
+const NAV=a=>`<div class="nv">${['Home','Assets','Budget','Tax','Shared'].map((n,i)=>`<span class="${i==a?'on':''}"><i></i>${n}</span>`).join('')}</div>`;
+const SB='<div class="sb"><span>9:41</span><span>5G ▮▮▮</span></div>';
+const D=(p)=>`<span class="dl ${p>=0?'up':'dn'}">${p>=0?'▲':'▼'} ${Math.abs(p).toFixed(2)}%</span>`;
+function pie(d){const t=d.reduce((a,b)=>a+b[1],0),C=['#00E676','#40C4FF','#FFD740','#B388FF'];let o=0,s='';
+d.forEach((x,i)=>{const l=x[1]/t*251.3;s+=`<circle r="40" cx="50" cy="50" fill="none" stroke="${C[i]}" stroke-width="13" stroke-dasharray="${l-1.5} 251.3" stroke-dashoffset="${-o}" transform="rotate(-90 50 50)"/>`;o+=l});
+return `<div class="row"><svg viewBox="0 0 100 100" style="width:96px" role="img" aria-label="Allocation">${s}</svg><div style="font-size:11px;display:grid;gap:5px">${d.map((x,i)=>`<div><span style="color:${C[i]}">●</span> ${x[0]} ${Math.round(x[1]/t*100)}%</div>`).join('')}</div></div>`}
+function line(v){const w=240,h=70,mx=Math.max(...v),mn=Math.min(...v),p=v.map((y,i)=>`${i*w/(v.length-1)},${h-(y-mn)/(mx-mn)*h}`).join(' ');
+return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Runway"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#00E676" stop-opacity=".3"/><stop offset="1" stop-color="#00E676" stop-opacity="0"/></linearGradient></defs><polygon points="0,${h} ${p} ${w},${h}" fill="url(#g)"/><polyline points="${p}" fill="none" stroke="#00E676" stroke-width="2.5" stroke-linejoin="round"/></svg>`}
+function candles(){const c=[[100,108,98,106],[106,111,104,109],[109,110,101,103],[103,107,100,106],[106,115,105,114],[114,118,112,113],[113,121,112,120],[120,124,117,118],[118,126,116,125],[125,130,123,129]];
+const W=240,H=140,hi=130,lo=98,y=v=>H-(v-lo)/(hi-lo)*H,s=W/c.length;
+return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Candlestick chart">${c.map((k,i)=>{const col=k[3]>=k[0]?'#00E676':'#FF5252',x=s*i+s/2,t=y(Math.max(k[0],k[3])),b=y(Math.min(k[0],k[3]));return `<line x1="${x}" x2="${x}" y1="${y(k[1])}" y2="${y(k[2])}" stroke="${col}" stroke-width="1.5"/><rect x="${x-s*.3}" y="${t}" width="${s*.6}" height="${Math.max(b-t,2)}" rx="2" fill="${col}"/>`}).join('')}</svg>`}
+function gauge(v){const a=Math.PI*(1-v/100),x=50+40*Math.cos(a),y=50-40*Math.sin(a);
+return `<svg viewBox="0 0 100 58" role="img" aria-label="Safety score ${v}"><path d="M10 50 A40 40 0 0 1 90 50" fill="none" stroke="#1E212B" stroke-width="9" stroke-linecap="round"/><path d="M10 50 A40 40 0 0 1 ${x} ${y}" fill="none" stroke="#00E676" stroke-width="9" stroke-linecap="round"/><text x="50" y="48" text-anchor="middle" fill="#fff" font-size="18" font-weight="800">${v}</text></svg>`}
+const tx=(n,a,s,c)=>`<div class="row"><div><div style="font-size:13px">${n}</div><span class="chip ${c}">${s}</span></div><b class="${a[0]=='+'?'up':''}" style="font-size:13px">${a}</b></div>`;
+const S=[
+['Biometric Unlock','Auth module',`${SB}<div class="bd" style="justify-content:center;text-align:center;gap:18px"><div class="fp"><svg viewBox="0 0 24 24" width="44" fill="none" stroke="#00E676" stroke-width="1.6" stroke-linecap="round"><path d="M12 11v4M8 20c0-3 1-5 1-8a3 3 0 016 0c0 3 1 5 1 8M5 15c0-6 3-10 7-10s7 4 7 10"/></svg></div><div><div class="big" style="font-size:20px">Welcome back</div><p class="mu">Touch the sensor to unlock</p></div><div class="btn">Use PIN instead</div></div>`],
+['Net Worth Dashboard','Dashboard module',`${SB}<div class="tb">Dashboard</div><div class="bd"><div class="cd"><div class="mu">Net worth</div><div class="big">₹ 1,84,52,300</div>${D(3.42)} <span class="mu">this month</span></div><div class="cd"><div class="mu" style="margin-bottom:8px">Allocation</div>${pie([['Equities',42],['Crypto',18],['Real estate',25],['Cash',15]])}</div><div class="cd"><div class="row"><span class="mu">Cash runway</span><b class="up">212 days</b></div>${line([9,8.6,8.9,7.8,7.2,7.5,6.4,5.9,5.1,4.8])}</div></div>${NAV(0)}`],
+['Equities & Candlesticks','Portfolio module',`${SB}<div class="tb">RELIANCE</div><div class="bd"><div class="cd"><div class="row"><div><b>₹ 2,945.10</b><div class="mu">NSE · Cost basis ₹ 2,610</div></div>${D(5.18)}</div><div style="margin-top:12px">${candles()}</div></div><div class="cd"><div class="row"><span class="mu">Unrealised P&amp;L</span><b class="up">+₹ 33,510</b></div></div><div class="cd">${tx('TCS · 12 sh','+₹ 4,120','Settled','ok')}</div></div>${NAV(1)}`],
+['Splurge Safety Indicator','Budget module',`${SB}<div class="tb">Splurge Safety</div><div class="bd"><div class="cd" style="text-align:center">${gauge(78)}<div class="up" style="font-weight:700">Safe to spend</div><div class="mu">₹ 6,400 discretionary left this month</div></div><div class="cd"><div class="row"><span>Dining</span><span class="mu">72%</span></div><div class="bar"><div style="width:72%"></div></div><div class="row" style="margin-top:10px"><span>Shopping</span><span class="mu">41%</span></div><div class="bar"><div style="width:41%"></div></div><div class="row" style="margin-top:10px"><span>Travel</span><span class="mu">18%</span></div><div class="bar"><div style="width:18%"></div></div></div></div>${NAV(2)}`],
+['Tax Liability Estimator','Tax vault module',`${SB}<div class="tb">Tax Liability</div><div class="bd"><div class="cd"><div class="mu">Estimated FY tax</div><div class="big">₹ 1,12,400</div><span class="chip wt">Due 15 Mar</span></div><div class="cd"><div class="mu" style="margin-bottom:8px">Capital gains</div>${tx('Short term · 15%','₹ 38,200','Equity','')}<div style="height:10px"></div>${tx('Long term · 10%','₹ 74,200','Equity','')}</div><div class="cd"><div class="row"><span>Export gateway</span><span class="chip ok">PDF · CSV</span></div></div></div>${NAV(3)}`],
+['Shared Ledger & IOU','Shared wealth module',`${SB}<div class="tb">Household</div><div class="bd"><div class="cd"><div class="mu">You are owed</div><div class="big up">₹ 8,450</div></div><div class="cd">${tx('Rent · split 3','-₹ 12,000','Settled','ok')}<div style="height:10px"></div>${tx('Groceries · Anu','+₹ 2,150','Pending','wt')}<div style="height:10px"></div>${tx('IOU · Rahul · 8% p.a.','+₹ 6,300','Accruing','')}</div><div class="cd"><div class="row"><span>Pocket money · Aryan</span><b>₹ 500/wk</b></div></div></div>${NAV(4)}`]
+];
+const h=(l,v,x='')=>`<div class="cd"><div class="mu">${l}</div><div class="big">${v}</div>${x}</div>`;
+const L=r=>`<div class="cd" style="display:grid;gap:10px">${r.map(a=>tx(...a)).join('')}</div>`;
+const Br=r=>`<div class="cd" style="display:grid;gap:10px">${r.map(a=>`<div><div class="row"><span style="font-size:13px">${a[0]}</span><span class="mu">${a[1]}</span></div><div class="bar"><div style="width:${parseInt(a[1])}%"></div></div></div>`).join('')}</div>`;
+const Ch=(t,a)=>`<div class="cd"><div class="mu" style="margin-bottom:8px">${t}</div>${a}</div>`;
+const Bt=t=>`<div class="btn">${t}</div>`;
+const Cp=a=>`<div class="cd" style="display:flex;flex-wrap:wrap;gap:6px">${a.map(x=>`<span class="chip">${x}</span>`).join('')}</div>`;
+const Op=a=>a.map(x=>`<div class="cd" style="padding:11px;font-size:13px">${x}</div>`).join('');
+const F=(l,v)=>`<div class="cd" style="padding:11px"><div class="mu">${l}</div>${v}</div>`;
+const P=(t,c,n,...b)=>[t,c,`${SB}<div class="tb">${t}</div><div class="bd">${b.join('')}</div>${n>=0?NAV(n):''}`];
+const A='Auth module',Dm='Dashboard module',Pm='Portfolio module',Bm='Budget module',Tm='Tax vault module',Sm='Shared wealth module',Vm='Developer module';
+S.push(
+P('Broker API Sync',A,-1,L([['Zerodha','Linked','Synced','ok'],['Groww','Link','Ready',''],['Binance','Link','Ready','']]),Bt('Continue')),
+P('Risk Wizard · Intro',A,-1,h('Risk profile','5 questions','<p class="mu">Tune your allocation targets.</p>'),Br([['Progress','0%']]),Bt('Start')),
+P('Risk Wizard · Questions',A,-1,Ch('Q2 of 5 · Portfolio falls 20%. You…',''),Op(['Sell everything','Hold and wait','Buy more']),Br([['Progress','40%']])),
+P('Credentials Login',A,-1,F('Email','you@email.com'),F('Password','••••••••••'),Bt('Sign in'),'<p class="mu" style="text-align:center">Forgot password?</p>'),
+P('Onboarding Success',A,-1,h('You’re all set','✓','<p class="mu">3 brokers synced · Risk: Balanced</p>'),Bt('Open dashboard')),
+P('Asset Allocation',Dm,0,Ch('By asset class',pie([['Equities',42],['Crypto',18],['Real estate',25],['Cash',15]])),L([['Equities','₹ 77.4L','+2.1%','ok'],['Crypto','₹ 33.2L','-1.4%','']])),
+P('Cash-Flow Runway',Dm,0,h('Runway','212 days',D(-1.2)),Ch('Projection',line([9,8.6,8.9,7.8,7.2,7.5,6.4,5.9,5.1,4.8])),Cp(['30d','90d','1y'])),
+P('Smart Transaction Log',Dm,0,Cp(['All','Food','Bills','Income']),L([['Swiggy · Food','-₹ 642','Settled','ok'],['Salary · Acme','+₹ 2,40,000','Settled','ok'],['SIP · Zerodha','-₹ 25,000','Pending','wt'],['Netflix','-₹ 649','Settled','ok']])),
+P('Transaction Detail',Dm,0,h('Swiggy','-₹ 642','<span class="chip ok">Settled</span>'),L([['Category','Food','Parsed from SMS',''],['Account','HDFC ••4421','Debit',''],['Date','18 Oct','9:12 PM','']])),
+P('Multi-Currency',Dm,0,L([['INR','₹ 1.2 Cr','Base','ok'],['USD','$ 18,400','+0.3%',''],['EUR','€ 6,200','-0.1%',''],['AED','د.إ 12,000','Flat','']])),
+P('Private Vault',Dm,0,h('Vault balance','₹ ••••••••','<p class="mu">Hidden until unlocked</p>'),Bt('Reveal with biometrics')),
+P('Insights Feed',Dm,0,L([['Dining up 18% vs last month','Review','Insight','wt'],['3 idle subscriptions found','Save ₹ 1,247','AI','ok'],['Cash above target','Invest ₹ 40k','Tip','ok']])),
+P('Cost Basis',Pm,1,h('Total cost','₹ 52.1L',D(8.4)),Br([['TCS · avg ₹ 3,410','72%'],['INFY · avg ₹ 1,520','55%'],['RELIANCE · avg ₹ 2,610','88%']])),
+P('Candlestick Detail',Pm,1,h('NIFTY 50','24,180',D(0.62)),Ch('',candles()),Cp(['1D','1W','1M','1Y'])),
+P('Crypto',Pm,1,h('Crypto value','₹ 33.2L',D(-1.4)),L([['BTC · 0.42','₹ 22.1L','-1.1%',''],['ETH · 4.8','₹ 9.6L','-2.0%',''],['SOL · 30','₹ 1.5L','+3.4%','ok']])),
+P('Cold Storage',Pm,1,h('Ledger Nano','0.31 BTC','<span class="chip ok">Verified offline</span>'),L([['bc1q…x7k2','Receive','Watch-only','']]),Bt('Add wallet')),
+P('Real Estate Equity',Pm,1,h('Equity','₹ 41.0L','<p class="mu">Value ₹ 82L · Loan ₹ 41L</p>'),Br([['Loan paid off','50%'],['Appreciation','+12%']])),
+P('Tokenized Assets',Pm,1,L([['Mumbai Tower · 120 tokens','₹ 1.8L','+4.2%','ok'],['Goa Villa · 40 tokens','₹ 0.9L','+1.1%','ok']]),Bt('Browse offerings')),
+P('Rebalancing',Pm,1,Br([['Equities · 42% vs 40%','105%'],['Crypto · 18% vs 10%','100%'],['Cash · 15% vs 20%','75%']]),L([['Sell crypto','₹ 2.6L','Suggested','wt']]),Bt('Apply plan')),
+P('Watchlist',Pm,1,L([['HDFCBANK','₹ 1,684','+1.2%','ok'],['ETH','₹ 2.0L','-2.0%',''],['GOLDBEES','₹ 71','+0.4%','ok']])),
+P('Zero-Based Matrix',Bm,2,h('Unassigned','₹ 0','<span class="chip ok">Every rupee has a job</span>'),Br([['Rent','90%'],['Food','60%'],['SIP','100%'],['Fun','35%']])),
+P('Bucket Editor',Bm,2,Ch('Drag to reallocate',''),Br([['Food ₹ 18k','60%'],['Fun ₹ 8k','35%']]),Bt('Save buckets')),
+P('Subscriptions',Bm,2,L([['Netflix','₹ 649','Monthly','ok'],['Spotify','₹ 119','Monthly','ok'],['Gym','₹ 1,500','Unused','wt']])),
+P('Predicted Bills',Bm,2,L([['Electricity','₹ 2,180','In 3 days','wt'],['Credit card','₹ 14,900','In 9 days',''],['Internet','₹ 799','In 12 days','']])),
+P('Milestones',Bm,2,Br([['Emergency fund','100%'],['House down payment','64%'],['Europe trip','38%']])),
+P('FIRE Calculator',Bm,2,h('FIRE number','₹ 6.2 Cr','<p class="mu">Age 46 · 12 yrs to go</p>'),Ch('Corpus path',line([1,1.4,1.9,2.6,3.4,4.5,6.2]))),
+P('Forecast',Bm,2,h('Dec balance','₹ 3.4L',D(6.1)),Ch('12-month outlook',line([2,2.3,2.2,2.6,2.9,2.8,3.1,3.4]))),
+P('Capital Gains',Tm,3,Ch('Gain mix',pie([['Short',38],['Long',74]])),L([['Total gains','₹ 1.12L','FY 25-26','']])),
+P('Receipt Scanner',Tm,3,'<div class="cd" style="height:260px;border:2px dashed var(--em);display:grid;place-items:center"><span class="mu">Align receipt in frame</span></div>',Bt('Capture')),
+P('OCR Preview',Tm,3,L([['Vendor','Croma','98%','ok'],['Amount','₹ 18,499','97%','ok'],['Date','12 Oct','95%','ok'],['GST','₹ 2,822','91%','wt']]),Bt('Confirm')),
+P('Deductible Expenses',Tm,3,Br([['Home office','80%'],['Software','45%'],['Travel','20%']]),h('Total deductible','₹ 94,200')),
+P('Export Hub',Tm,3,Cp(['PDF','CSV','ClearTax','Quicken']),L([['FY 25-26 report','Ready','PDF','ok']]),Bt('Export')),
+P('Export History',Tm,3,L([['FY24-25.pdf','12 Mar','Done','ok'],['Gains.csv','02 Jul','Done','ok'],['ClearTax.json','15 Jul','Done','ok']])),
+P('Split Detail',Sm,4,h('Rent · October','₹ 36,000','<p class="mu">Split equally by 3</p>'),L([['You','₹ 12,000','Paid','ok'],['Anu','₹ 12,000','Paid','ok'],['Ravi','₹ 12,000','Pending','wt']])),
+P('IOU Manager',Sm,4,h('Lent out','₹ 18,000'),L([['Rahul · 8% p.a.','+₹ 6,300','Accruing',''],['Meera · 0%','+₹ 11,700','Due 30 Oct','wt']])),
+P('Interest Calculator',Sm,4,F('Principal','₹ 20,000'),F('Rate','8% p.a.'),h('Interest in 6 mo','₹ 800','<p class="mu">Total due ₹ 20,800</p>')),
+P('Allowance Board',Sm,4,L([['Aryan','₹ 500/wk','Active','ok'],['Diya','₹ 300/wk','Paused','wt']]),Bt('Add dependent')),
+P('Dependent Detail',Sm,4,h('Aryan','₹ 1,240','<span class="chip ok">Saving goal 62%</span>'),Br([['Bicycle fund','62%']]),Bt('Send allowance')),
+P('Settings',Vm,-1,L([['Biometric lock','On','Security','ok'],['Notifications','On','Alerts','ok'],['Currency','INR','Base','']])),
+P('Profile',Vm,-1,h('Anil Kumar','Premium','<p class="mu">anil@email.com</p>'),Bt('Edit profile')),
+P('Theme Engine',Vm,-1,Cp(['Emerald','Cyan','Amber','Violet']),Op(['Dark (default)','AMOLED black','Dynamic color'])),
+P('Mock API Sandbox',Vm,-1,F('Endpoint','/v1/portfolio'),F('Latency','350 ms'),Bt('Inject mock data')),
+P('README Sync',Vm,-1,Ch('README.md',`<p class="mu" style="font-family:monospace"># AuraFinance<br>7 modules · 50 screens</p>`),Bt('Sync to GitHub')),
+P('About',Vm,-1,h('AuraFinance','v1.0','<p class="mu">Jetpack Compose · Material 3</p>'),Cp(['Licenses','Privacy']))
+);
+const GR=[['Auth','Authentication'],['Dashboard','Dashboard'],['Portfolio','Portfolio'],['Budget','Budget & AI'],['Tax','Tax Vault'],['Shared','Shared Wealth'],['Developer','Developer']];
+document.getElementById('gal').innerHTML=GR.map(([k,n])=>{const g=S.filter(s=>s[1].startsWith(k));return `<h2 style="flex-basis:100%;text-align:center">${n} · ${g.length}</h2>`+g.map(s=>`<figure><div class="ph"><div class="sc">${s[2]}</div></div><figcaption><b>${s[0]}</b>${s[1]}</figcaption></figure>`).join('')}).join('');
+const M={'Authentication · 6':'Biometric Unlock,Broker API Sync,Risk Wizard Intro,Risk Wizard Questions,Credentials Login,Onboarding Success',
+'Dashboard · 8':'Net Worth,Asset Allocation,Cash-Flow Runway,Smart Transaction Log,Transaction Detail,Multi-Currency,Private Vault,Insights Feed',
+'Portfolio · 9':'Equities,Candlestick Detail,Cost Basis,Crypto,Cold Storage,Real Estate Equity,Tokenized Assets,Rebalancing,Watchlist',
+'Budget & AI · 8':'Zero-Based Matrix,Bucket Editor,Subscriptions,Predicted Bills,Splurge Safety,Milestones,FIRE Calculator,Forecast',
+'Tax Vault · 7':'Tax Liability,Capital Gains,Receipt Scanner,OCR Preview,Deductible Expenses,Export Hub,Export History',
+'Shared Wealth · 6':'Household Splits,Split Detail,IOU Manager,Interest Calculator,Allowance Board,Dependent Detail',
+'Developer · 6':'Settings,Profile,Theme Engine,Mock API Sandbox,README Sync,About'};
+document.getElementById('mods').innerHTML=Object.entries(M).map(([k,v])=>`<div class="cd"><b>${k}</b><div>${v.split(',').map(x=>`<span class="chip">${x}</span>`).join('')}</div></div>`).join('');
+</script></body></html>
